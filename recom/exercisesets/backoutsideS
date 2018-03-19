@@ -1,0 +1,9 @@
+a0,双侧抬手,0,warmup,1,10,40
+a1,左侧背部弯曲,0,warmup,1,1,20
+a2,右侧背部弯曲,0,warmup,1,1,20
+a5,双手向上伸展背部,0,stretching,1,20,1
+a6,坐姿左旋,a7,stretching.relax,1,20,40
+a7,坐姿右旋,a6,stretching.relax,1,20,40
+a8,站姿上背部拉伸,0,stretching,1,20,40
+a9,俯身划船式提肘,0,strongmuscle,1,20,40
+a12,附身哑铃侧平举,0,strongmuscle,1,20,40
