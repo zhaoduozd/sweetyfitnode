@@ -12,11 +12,6 @@ else
 
 var pyrecom = python.import('recomExercise');
 
-function tep() {
-    var x = 1;
-    return x;
-}
-
 function queryRecomActionSet(userdata) {
     var data = {};
     data['uid'] = userdata['uid'];
@@ -26,17 +21,15 @@ function queryRecomActionSet(userdata) {
     data['time'] = userdata['time'];
 
     var temp = pyrecom.queryRecomActions(data);
+
     var result = eval(temp);
-    // console.log(result);
-
     var rlen = result.length;
+
     for (var i = 0; i < rlen; ++i) {
-        // result[i]['gifimg'] = gifurlroot + '?gid=' + result['uid'] + '.gif';
-        result[i]['gifurl'] = 'http://qq.yh31.com/tp/zjbq/201803152110104016.gif';
+        result[i]['gifimg'] = gifurlroot + '?gid=' + result[i]['gifname'] + '.gif';
+        // result[i]['gifurl'] = 'http://qq.yh31.com/tp/zjbq/201803152110104016.gif';
     }
-
     console.log(result);
-
     return result;
 }
 

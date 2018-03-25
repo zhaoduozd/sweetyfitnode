@@ -15,9 +15,10 @@
 // ROOT URLs
 
 var rooturl = '/Users/duozhao/Documents/GitHub/sweetyfitnode/';
-var gifurl = 'resource/gifimg/';
+var gifurl = 'resource/actiongif/';
 var foodurl = 'resource/foodimg/';
 var speech = 'resource/speech/';
+
 
 // OBJECTs
 
@@ -25,13 +26,14 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var multer = require('multer'); 
+var fs = require('fs');
 
 // Dora's Objects
 
 var user = require('./account/user');
-var recom = require('./recom/recom');
-var ui = require('./ui/ui');
-var feedback = require('./feedback/feedback');
+// var recom = require('./recom/recom');
+// var ui = require('./ui/ui');
+// var feedback = require('./feedback/feedback');
 
 // Parse
 
@@ -55,32 +57,49 @@ app.get('/account/updateinfo', user.updateinfo);
 
 // about recommendation of exercise and food
 
-app.post('/recom/exercise', recom.exercise);
-app.post('/recom/food', recom.food);
+// app.post('/recom/exercise', recom.exercise);
+// app.post('/recom/food', recom.food);
 
 // about ui list
-app.get('/ui/exercise', ui.exercise);
-app.get('/ui/food', ui.food);
+// app.get('/ui/exercise', ui.uiexercise);
+// app.get('/ui/food', ui.uifood);
 
 // about feedback
-app.get('/feedback/exerciserecord', feedback.exerciserecord);
+// app.get('/feedback/exerciserecord', feedback.exerciserecord);
 
 // response static resource
 
-app.get('/resource/gifimg', function(req, res){
-    var gid = req.query.gid;
-    res.sendFile(rooturl + gifurl +gid);
-});
+// app.get('/resource/gifimg', function(req, res){
+//     var gid = req.query.gid;
+//     var path = rooturl + gifurl + gid;
+//     fs.access(path, function(err){
+//         if (!err) {
+//             res.sendFile(path);
+//         } else {
+//             res.sendFile(rooturl + gifurl + 'default.gif');
+//         }
+//     });
+    
+// });
 
-app.get('/resource/foodimg', function(req, res){
-    var fid = req.query.fid;
-    res.sendFile(rooturl + foodurl +fid);
-});
+// app.get('/resource/foodimg', function(req, res){
+//     var fid = req.query.fid;
+//     var path = rooturl + foodurl + fid;
 
-app.get('/resource/speech', function(req, res){
-    var sid = req.query.sid;
-    res.sendFile(rooturl + speechurl +sid);
-});
+//     console.log(path);
+//     fs.access(path, function(err){
+//         if (!err) {
+//             res.sendFile(path);
+//         } else {
+//             res.sendFile(rooturl + foodurl + 'default.png');
+//         }
+//     });
+// });
+
+// app.get('/resource/speech', function(req, res){
+//     var sid = req.query.sid;
+//     res.sendFile(rooturl + speechurl +sid);
+// });
 
 app.listen(3000);
 

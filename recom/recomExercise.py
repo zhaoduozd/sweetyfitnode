@@ -6,7 +6,7 @@ def queryRecomActions(user):
     actionset = faset.FindExerciseSet(user);
     actionlist = acset.ActionCombination(actionset, user);
 
-    # print isinstance(actionlist, list);
+    #print isinstance(actionlist, list);
     return json.dumps(actionlist);
 
-#queryRecomActions({'uid':'001','level':'SS','region':'back','calorie':'100','place':'home','goal':'losefat','time':'600'});
+#queryRecomActions({'uid':'001','level':'SS','region':'back','calorie':'100','place':'home','goal':'losefat','time':'10'});

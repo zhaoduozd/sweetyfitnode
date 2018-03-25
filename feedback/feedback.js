@@ -37,6 +37,7 @@ exports.exerciserecord = function(req, res) {
                 {history: record}
             }
         );
+        res.json({'status':'succeed'});
     });
 };
 

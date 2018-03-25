@@ -1,9 +1,10 @@
-var resourceroot = 'http://127.0.0.1:3000/resource/'
-var imgurlroot = 'gifimg';
+var resourceroot = 'http://120.77.42.160:3000/resource/'
+var imgurlroot = 'actionimg';
 var speechurlroot = 'speech';
 var foodurlroot = 'foodimg'
 
 var exercise = require('./exercise');
+var food = require('./food');
 
 var MongoClient = require('mongodb').MongoClient
        , assert = require('assert');
@@ -16,20 +17,9 @@ function getrandomnum(minnum, maxnum) {
     return(minnum + Math.round(rand * range));   
 }
 
-function finduserdata(userdata) {
-    var result;
-    var userid = userdata['uid']
-    
-}
-
-function queryDataWithUserSetting(userdata) {
-
-}
-
 exports.exercise = function(req, res) {
     var userdata = req.body;
 
-    console.log(userdata);
     var userid = userdata['uid'];
 
     if (!userid) {
@@ -49,52 +39,65 @@ exports.exercise = function(req, res) {
                 var data = docs[0];
 
                 if (!userdata['region']) {
-                    var len = data['regions'].length;
+                    var len;
+                    if (data['region']) {
+                        len = data['regions'].length;
+                    } else {
+                        len = 0;
+                    }
+
                     if (len == 0) {
                         userdata['region'] = 'all';
                     } else {
                         var rid = getrandomnum(0, len-1);
                         userdata['region'] = data['regions'][rid];
-
-                        console.log(rid);
                     }
                 }
 
                 if (!userdata['place']) {
-                    var len = data['places'].length;
+                    var len;
+                    if (data['place']) {
+                        len = data['place'].length;
+                    } else {
+                        len = 0;
+                    }
                     if (len == 0) {
                         userdata['place'] = 'home';
                     } else {
                         var rid = getrandomnum(0, len-1);
                         userdata['place'] = data['places'][rid];
-
-                        console.log(rid);
                     }
                 }
 
                 if (!userdata['time']) {
-                    var len = data['times'].length;
+                    var len;
+                    if (data['time']) {
+                        len = data['time'].length;
+                    } else {
+                        len = 0;
+                    }
                     if (len == 0) {
                         userdata['time'] = '10';
                     } else {
                         var rid = getrandomnum(0, len-1);
                         userdata['time'] = data['times'][rid];
-
-                        console.log(rid);
                     }
                 }
 
-                userdata['level'] = data['level'];
-
-                // console.log(userdata);
+                if (data['level']) {
+                    userdata['level'] = data['level'];
+                } else {
+                    userdata['level'] = 'S';
+                }
 
                 var actions = exercise.queryExerRecom(userdata);
+
                 var count = actions.length;
 
                 var result = {};
                 result['len'] = count;
                 result['actions'] = actions;
-
+// console.log('got recommendation data:', result);
                 res.json(result);
 
             } else {
@@ -104,107 +107,18 @@ exports.exercise = function(req, res) {
     });
 };
 
-exports.food = function(req, res) {
+function requirefood(req, res) {
     var userdata = req.body;
 
-    res.json({
-        'maindish':[
-            {
-                'img':resourceroot + foodurlroot + '?fid=f0.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'
-            },
-            {
-                'img':resourceroot + foodurlroot + '?fid=f1.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'
-            },
-            {                
-                'img':resourceroot + foodurlroot + '?fid=f2.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'}
-        ],
-        'vegetable':[
-            {
-                'img':resourceroot + foodurlroot + '?fid=f3.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'
-            },
-            {
-                'img':resourceroot + foodurlroot + '?fid=f4.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'
-            },
-            {                
-                'img':resourceroot + foodurlroot + '?fid=f5.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'}
-        ],
-        'meat':[
-            {
-                'img':resourceroot + foodurlroot + '?fid=f6.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'
-            },
-            {
-                'img':resourceroot + foodurlroot + '?fid=f7.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'
-            },
-            {                
-                'img':resourceroot + foodurlroot + '?fid=f8.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'}
-        ],
-        'fruit':[
-            {
-                'img':resourceroot + foodurlroot + '?fid=f0.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'
-            },
-            {
-                'img':resourceroot + foodurlroot + '?fid=f1.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'
-            },
-            {                
-                'img':resourceroot + foodurlroot + '?fid=f2.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'}
-        ],
-        'nuts':[
-            {
-                'img':resourceroot + foodurlroot + '?fid=f0.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'
-            },
-            {
-                'img':resourceroot + foodurlroot + '?fid=f1.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'
-            },
-            {                
-                'img':resourceroot + foodurlroot + '?fid=f2.jpeg',
-                'fname':'莴笋',
-                'calorie':'46Kcal/100g',
-                'recomuse':'100g'}
-        ]
-    });
+    result = food.queryFoodRecom();
+
+    for (var i = 0; i < result.length; ++i) {
+        for (var j = 0; j < result[i]['foods'].length; ++j) {
+            result[i]['foods'][j]['img'] = resourceroot + foodurlroot + '?fid=' + result[i]['foods'][j]['id'] + '.png';
+        }
+    }
+
+    res.json(result);
 }
 
-
-
+exports.food = requirefood;

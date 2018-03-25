@@ -1,4 +1,5 @@
 import ExerciseAttributeTree as eatree
+import json
 
 
 order = ['region', 'place', 'level'];
@@ -15,42 +16,46 @@ def classifier():
 
     actions = [];
 
-    for action in rawdata:
-        action = action.split(',');
-        actions.append(action);
-
-    for act in actions:
-        action = {};
+    for item in rawdata:
+        action ={};
+        act = item.split(',');
         action['id'] = act[0];
         action['name'] = act[1];
-        action['calorie'] = act[3];
-        action['level'] = act[4];
+        action['region'] = act[2];
+        action['level'] = act[3];
+        action['effect'] = act[4];
+        action['group'] = act[5];
+        action['calorie'] = act[6];
         action['pair'] = act[7];
+        action['place'] = act[8].split('.');
         action['time'] = act[9];
-        action['group'] = act[10][0:-1];
-        action['region'] = act[2].split('.');
-        action['place'] = act[5].split('.');
-        action['instrument'] = act[6].split('.');
-        action['effect'] = act[8];
+        action['grouptime'] = act[10];
+        action['instrument'] = act[11];
+        action['tip'] = act[12];
+        action['gifname'] = act[13];
+        actions.append(action);
+ 
+    for action in actions:
+        putActionIntoSets(action, tree['region'], 0, '');
 
-        traverse(action, tree['region'], 0, '');
 
-
-def traverse(action, tree, root, name):
+def putActionIntoSets(action, tree, root, name):
     if tree == None:
         fname = 'exercisesets/%s' % name;
-        content = '%s,%s,%s,%s,%s,%s,%s\n' % (action['id'],action['name'],action['pair'],action['effect'],action['calorie'],action['group'],action['time']);
+        # content = '%s,%s,%s,%s,%s,%s,%s\n' % (action['id'],action['name'],action['pair'],action['effect'],action['calorie'],action['group'],action['time']);
+        content = json.dumps(action) + '\n';
         f = open(fname, 'a');
         f.write(content);
         f.close();
         return;
 
     tag = order[root];
-    if action[tag][0] == 'S':
-        traverse(action, tree[action[tag]], root+1, name + action[tag]);
-    else:
+
+    if isinstance(action[tag], list):
         for item in action[tag]:
-            traverse(action, tree[item], root+1, name+item);
+            putActionIntoSets(action, tree[item], root+1, name+item);
+    else:
+        putActionIntoSets(action, tree[action[tag]], root+1, name + action[tag]);
 
 
 classifier();
